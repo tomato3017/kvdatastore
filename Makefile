@@ -13,10 +13,16 @@ VERSION=$(IMAGE_TAG)
 
 all: test build
 build: vendor
-		$(GOBUILD)
+		$(GOBUILD) .
 test:
 		$(GOTEST) -v ./...
 clean:
 		$(GOCLEAN)
 vendor:
 		go mod vendor
+lint:
+		golint .
+redisup:
+		docker run -d --name redissrv --network host  --rm redis
+redisdown:
+		docker stop redissrv
