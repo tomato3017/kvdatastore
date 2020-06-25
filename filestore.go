@@ -121,10 +121,8 @@ func (fs *FileStore) Sync() error {
 	return fs.syncToDisk()
 }
 
-func (fs *FileStore) syncToDisk() error {
-	fs.lock.Lock()
-	defer fs.lock.Unlock()
-
+//sync to disk without locking
+func (fs *FileStore) syncToDiskRaw() error {
 	//The cache isn't dirty, no need to save.
 	if !fs.dirty {
 		return nil
@@ -150,4 +148,11 @@ func (fs *FileStore) syncToDisk() error {
 	fs.dirty = false
 
 	return nil
+}
+
+func (fs *FileStore) syncToDisk() error {
+	fs.lock.Lock()
+	defer fs.lock.Unlock()
+
+	return fs.syncToDiskRaw()
 }
