@@ -72,7 +72,7 @@ func (fs *FileStore) Set(key string, value string) error {
 	fs.dirty = true
 
 	if fs.SaveOnChange {
-		return fs.syncToDisk()
+		return fs.syncToDiskRaw()
 	}
 
 	return nil
